@@ -39,7 +39,12 @@ return {
             vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
             vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 
-            vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+            vim.keymap.set(
+                "n",
+                "<leader>ge",
+                vim.diagnostic.setloclist,
+                { desc = "[G]o [E]rrors", noremap = true, silent = true }
+            )
             vim.keymap.set("n", "<leader>lo", ":lopen<CR>", { noremap = true, silent = true })
             vim.keymap.set("n", "<leader>lc", ":lclose<CR>", { noremap = true, silent = true })
 
