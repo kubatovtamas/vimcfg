@@ -1,3 +1,13 @@
 return {
-    { "akinsho/toggleterm.nvim", version = "*", config = true },
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		config = true,
+        opts = {
+            persist_mode = false,
+        }
+	},
 }
+
+
+

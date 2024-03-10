@@ -101,3 +101,8 @@ vim.api.nvim_set_keymap("c", "<C-e>", "<C-C>5<C-e>", { noremap = true, silent = 
 
 -- Transform selected lines into markdown bullet points
 vim.keymap.set("v", "<leader>mb", ":s!^\\(\\s*\\)\\(.*\\)!\\1- \\2! <CR> gv", { desc = "[M]ake [B]ullet" })
+
+
+-- Terminal
+vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n><C-w>w]], {noremap = true})
+vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>", {noremap = true, desc = "[T]oggle [T]erminal"})
