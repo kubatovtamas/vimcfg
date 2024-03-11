@@ -1,3 +1,22 @@
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "TelescopeResults",
+--   callback = function(ctx)
+--     vim.api.nvim_buf_call(ctx.buf, function()
+--       vim.fn.matchadd("TelescopeParent", "\t\t.*$")
+--       vim.api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+--     end)
+--   end,
+-- })
+--
+-- local function filenameFirst(_, path)
+--   local tail = vim.fs.basename(path)
+--   local parent = vim.fs.dirname(path)
+--   if parent == "." then
+--     return tail
+--   end
+--   return string.format("%s\t\t%s", tail, parent)
+-- end
+
 return {
 	{
 		"nvim-telescope/telescope.nvim",
@@ -5,7 +24,24 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("telescope").setup({
-				defaults = {},
+				defaults = {
+                    path_display = { "smart" },
+					layout_config = {
+						center = {
+							height = 0.4,
+							preview_cutoff = 40,
+							prompt_position = "top",
+							width = 0.5,
+						},
+						horizontal = {
+							height = 0.9,
+							preview_cutoff = 120,
+                            preview_width = 0.4,
+							prompt_position = "bottom",
+							width = 0.9,
+						},
+					},
+				},
 				pickers = {
 					find_files = {
 						theme = "dropdown",
@@ -21,7 +57,7 @@ return {
 
 			-- File Pickers
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]iles" })
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[G]rep" })
+			vim.keymap.set("n", "<leader>fgr", builtin.live_grep, { desc = "[GR]ep" })
 			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[W]ord" })
 
 			-- Vim Pickers
@@ -41,7 +77,12 @@ return {
 			vim.keymap.set("n", "<leader>fli", builtin.lsp_incoming_calls, { desc = "[L]sp [I]incoming Calls" })
 			vim.keymap.set("n", "<leader>flo", builtin.lsp_outgoing_calls, { desc = "[L]sp [O]utgoing Calls" })
 			vim.keymap.set("n", "<leader>fls", builtin.lsp_document_symbols, { desc = "[L]sp [S]ymbols (Document)" })
-			vim.keymap.set("n", "<leader>flS", builtin.lsp_workspace_symbols, { desc = "[L]sp [S]ymbols (Workspace)" })
+			vim.keymap.set(
+				"n",
+				"<leader>flS",
+				builtin.lsp_dynamic_workspace_symbols,
+				{ desc = "[L]sp [S]ymbols (Workspace)" }
+			)
 			vim.keymap.set("n", "<leader>fle", builtin.diagnostics, { desc = "[L]sp [E]rror Diagnostics" })
 			vim.keymap.set("n", "<leader>fld", builtin.lsp_definitions, { desc = "[L]sp [D]efinition" })
 			vim.keymap.set("n", "<leader>f/", function()

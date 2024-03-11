@@ -82,10 +82,11 @@ vim.keymap.set("n", "<leader>py", ":write | :!python %<CR>", { noremap = true, d
 -- Copy the current buffer's path to register 'a'
 vim.api.nvim_set_keymap(
     "n",
-    "<Leader>cbp",
+    "<Leader>pwd",
     [[:let @+ = expand('%:p')<CR>]],
-    { noremap = true, silent = true, desc = "[C]opy [B]uffer [P]ath to Register 'a'" }
+    { noremap = true, silent = true, desc = "[pwd] to clipboard" }
 )
+
 
 -- Scroll up three lines
 vim.api.nvim_set_keymap("n", "<C-y>", "5<C-y>", { noremap = true, silent = true })
@@ -101,7 +102,6 @@ vim.api.nvim_set_keymap("c", "<C-e>", "<C-C>5<C-e>", { noremap = true, silent = 
 
 -- Transform selected lines into markdown bullet points
 vim.keymap.set("v", "<leader>mb", ":s!^\\(\\s*\\)\\(.*\\)!\\1- \\2! <CR> gv", { desc = "[M]ake [B]ullet" })
-
 
 -- Terminal
 vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n><C-w>w]], {noremap = true})

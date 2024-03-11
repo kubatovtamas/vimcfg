@@ -10,33 +10,36 @@ return {
 
         wk.register({
             ["<leader>"] = {
-                c = {
-                    a = "[C]ode [A]ction",
-                },
-                D = "Type [D]efinition",
-                e = "Open Diagnostics Menu",
+                -- c = {
+                --     name = "[C]ode",
+                --     a = "[A]ction",
+                -- },
+                e = "[E]rror Popup",
                 f = {
                     name = "[F]ind"
                 },
-                g = {
-                    name = "Go",
-                    c = {
-                        name = "Comment (line)",
-                        c = "Toggle line comment",
-                        o = "Insert comment next line",
-                        O = "Insert comment previous line",
-                        A = "Insert comment end of line",
-                    },
-                    b = {
-                        name = "Comment (block)",
-                        c = "Toggle block comment",
-                        ["<leader>"] = "Toggle region block comment",
-                    },
-                    d = "[D]efinition",
-                    D = "[D]eclaration",
-                    r = "[R]eferences on Quick Fix List",
+                -- g = {
+                --     name = "[G]o",
+                    -- c = {
+                    --     name = "Comment (line)",
+                    --     c = "Toggle line comment",
+                    --     o = "Insert comment next line",
+                    --     O = "Insert comment previous line",
+                    --     A = "Insert comment end of line",
+                    -- },
+                    -- b = {
+                    --     name = "Comment (block)",
+                    --     c = "Toggle block comment",
+                    --     ["<leader>"] = "Toggle region block comment",
+                    -- },
+                --     d = "[D]efinition",
+                --     D = "[D]eclaration",
+                --     r = "[R]eferences on Quick Fix List",
+                -- },
+                h = {
+                    "[H]arpoon"
                 },
-                k = "Signature Help",
+                -- k = "Signature Help",
                 l = {
                     name = "[L]ocation List",
                     o = "open",
@@ -47,12 +50,12 @@ return {
                     o = "open",
                     c = "close",
                 },
-                w = {
-                    name = "LSP [W]orkspace",
-                    a = "[A]dd",
-                    r = "[R]emove",
-                    l = "[L]ist",
-                },
+                -- w = {
+                --     name = "LSP [W]orkspace",
+                --     a = "[A]dd",
+                --     r = "[R]emove",
+                --     l = "[L]ist",
+                -- },
             },
             { mode = "n" },
         })
@@ -71,18 +74,18 @@ return {
             },
         })
 
-        local visualMappings = {
-            ["<leader>"] = {
-                g = {
-                    name = "Go",
-                    c = "Toggle region line comment",
-                    b = "Toggle region block comment",
-                },
-            },
-        }
-        wk.register(visualMappings, { mode = "v" })
-        wk.register(visualMappings, { mode = "x" })
-        wk.register(visualMappings, { mode = "s" })
+        -- local visualMappings = {
+        --     ["<leader>"] = {
+        --         g = {
+        --             name = "[G]o",
+        --             c = "Toggle region line [C]omment",
+        --             b = "Toggle region [B]lock comment",
+        --         },
+        --     },
+        -- }
+        -- wk.register(visualMappings, { mode = "v" })
+        -- wk.register(visualMappings, { mode = "x" })
+        -- wk.register(visualMappings, { mode = "s" })
     end,
     opts = {},
 }
