@@ -10,16 +10,16 @@ return {
 
         wk.register({
             ["<leader>"] = {
-                -- c = {
-                --     name = "[C]ode",
-                --     a = "[A]ction",
-                -- },
-                e = "[E]rror Popup",
+                c = {
+                    name = "[C]ode",
+                    -- a = "[A]ction",
+                },
+                -- e = "[E]rror Popup",
                 f = {
                     name = "[F]ind"
                 },
-                -- g = {
-                --     name = "[G]o",
+                g = {
+                    name = "[G]o",
                     -- c = {
                     --     name = "Comment (line)",
                     --     c = "Toggle line comment",
@@ -32,24 +32,24 @@ return {
                     --     c = "Toggle block comment",
                     --     ["<leader>"] = "Toggle region block comment",
                     -- },
-                --     d = "[D]efinition",
-                --     D = "[D]eclaration",
-                --     r = "[R]eferences on Quick Fix List",
-                -- },
+                    -- d = "[D]efinition",
+                    -- D = "[D]eclaration",
+                    -- r = "[R]eferences on Quick Fix List",
+                },
                 h = {
                     "[H]arpoon"
                 },
                 -- k = "Signature Help",
-                l = {
-                    name = "[L]ocation List",
-                    o = "open",
-                    c = "close",
-                },
-                q = {
-                    name = "[Q]uick Fix List",
-                    o = "open",
-                    c = "close",
-                },
+                -- l = {
+                --     name = "[L]ocation List",
+                --     o = "open",
+                --     c = "close",
+                -- },
+                -- q = {
+                --     name = "[Q]uick Fix List",
+                --     o = "open",
+                --     c = "close",
+                -- },
                 -- w = {
                 --     name = "LSP [W]orkspace",
                 --     a = "[A]dd",
@@ -63,14 +63,14 @@ return {
         wk.register({
             ["["] = {
                 name = "Go To Prev",
-                d = "[D]iagnostic",
+                -- d = "[D]iagnostic",
             },
         })
 
         wk.register({
             ["]"] = {
                 name = "Go To Next",
-                d = "[D]iagnostic",
+                -- d = "[D]iagnostic",
             },
         })
 
