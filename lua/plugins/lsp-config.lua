@@ -31,6 +31,7 @@ return {
 					"jedi_language_server",
 					"pyright",
 					"marksman",
+                    "bashls",
 				},
 				automatic_installation = true,
 				modifiable = true,
@@ -128,6 +129,11 @@ return {
 				capabilities = capabilities,
 				on_attach = on_attach_base,
 			})
+
+            lspconfig.bashls.setup({
+                capabilities = capabilities,
+                on_attach = on_attach_base,
+            })
 
 			lspconfig.pyright.setup({
 				capabilities = capabilities,
