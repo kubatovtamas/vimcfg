@@ -63,6 +63,7 @@ vim.keymap.set("n", "<leader>ww", ":write<CR>", { noremap = true, silent = true,
 vim.keymap.set("n", "<leader>WW", ":wa<CR>", { noremap = true, silent = true, desc = "Save all files" })
 vim.keymap.set("n", "<leader>wq", ":wq<CR>", { noremap = true, silent = true, desc = "Save and quit" })
 vim.keymap.set("n", "<leader>wqa", ":wqa<CR>", { noremap = true, silent = true, desc = "Save all and quit" })
+vim.keymap.set("n", "<leader>qq", ":q<CR>", { noremap = true, silent = true, desc = "Quit" })
 
 -- Center screen on scrolling
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
@@ -100,8 +101,13 @@ vim.api.nvim_set_keymap("v", "<C-e>", "5<C-e>", { noremap = true, silent = true 
 vim.api.nvim_set_keymap("i", "<C-e>", "<C-o>5<C-e>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("c", "<C-e>", "<C-C>5<C-e>", { noremap = true, silent = true })
 
--- Transform selected lines into markdown bullet points
+-- Transform selected lines into bullet/task list, mark as complete/uncomplete
 vim.keymap.set("v", "<leader>mb", ":s!^\\(\\s*\\)\\(.*\\)!\\1- \\2! <CR> gv", { desc = "[M]ake [B]ullet" })
+vim.keymap.set("v", "<leader>mr", ":s!^\\(\\s*\\)\\(- \\[x\\] \\|- \\[ \\] \\|\\- \\)\\(.*\\)!\\1\\3! <CR> gv", { desc = "[M]ake [R]emoved Bullet" })
+-- vim.keymap.set("v", "<leader>mr", ":s!^\\s*\\(- \\[\\s*x\\s*\\] \\|- \\)\\(.*\\)/\\1\\2/ <CR> gv", { desc = "[M]ake [R]emoved Bullet" })
+vim.keymap.set("v", "<leader>mt", ":s!^\\(\\s*\\)\\(.*\\)!\\1- [ ] \\2! <CR> gv", { desc = "[M]ake [T]ask List" })
+vim.keymap.set("v", "<leader>mc", ":s!^- \\[ \\]!- [x]! <CR> gv", { desc = "[M]ake [C]omplete Task" })
+vim.keymap.set("v", "<leader>mu", ":s!^- \\[x\\]!- [ ]! <CR> gv", { desc = "[M]ake [U]ncomplete Task" })
 
 -- Terminal
 vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n><C-w>w]], {noremap = true})
