@@ -55,7 +55,7 @@ return {
             -- })
         end,
         keys = {
-            { "<leader>pvs", "<cmd>VenvSelect<cr>" },
+            { "<leader>pvs", "<cmd>VenvSelect<cr>"},
             { "<leader>pvc", "<cmd>VenvSelectCached<cr>" },
             { "<leader>pvl", "<cmd>VenvSelectCurrent<cr>" },
         },
