@@ -104,8 +104,8 @@ vim.api.nvim_set_keymap("c", "<C-e>", "<C-C>5<C-e>", { noremap = true, silent = 
 vim.keymap.set("v", "<leader>mb", ":s!^\\(\\s*\\)\\(.*\\)!\\1- \\2! <CR> gv", { desc = "[M]ake [B]ullet" })
 vim.keymap.set("v", "<leader>mr", ":s!^\\(\\s*\\)\\(- \\[x\\] \\|- \\[ \\] \\|\\- \\)\\(.*\\)!\\1\\3! <CR> gv", { desc = "[M]ake [R]emoved Bullet" })
 vim.keymap.set("v", "<leader>mt", ":s!^\\(\\s*\\)\\(.*\\)!\\1- [ ] \\2! <CR> gv", { desc = "[M]ake [T]ask List" })
-vim.keymap.set("v", "<leader>mc", ":s!^- \\[ \\]!- [x]! <CR> gv", { desc = "[M]ake [C]omplete Task" })
-vim.keymap.set("v", "<leader>mu", ":s!^- \\[x\\]!- [ ]! <CR> gv", { desc = "[M]ake [U]ncomplete Task" })
+vim.keymap.set("v", "<leader>mc", ":s!^\\(\\s*\\)- \\[ \\]!\\1- [x]! <CR> gv", { desc = "[M]ake [C]omplete Task" })
+vim.keymap.set("v", "<leader>mu", ":s!^\\(\\s*\\)- \\[x\\]!\\1- [ ]! <CR> gv", { desc = "[M]ake [U]ncomplete Task" })
 
 -- Terminal
 vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n><C-w>w]], {noremap = true})
