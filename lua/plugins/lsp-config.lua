@@ -22,9 +22,6 @@ return {
 				},
 			},
 		},
-		-- config = function()
-		-- 	require("mason").setup()
-		-- end,
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -113,12 +110,6 @@ return {
 					merge_tables(bufopts, { desc = "Signature Help" })
 				)
 
-				-- vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-				-- vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-				-- vim.keymap.set("n", "<leader>wl", function()
-				-- 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-				-- end, bufopts)
-
 				if enable_formatting then
 					if client.server_capabilities.documentFormattingProvider then
 						vim.keymap.set("n", "<leader>gf", function()
@@ -128,13 +119,13 @@ return {
 				end
 			end
 
-			-- local on_attach_ruff = function(client, bufnr)
-			-- 	-- Disable features that Pyright will handle
-			-- 	client.server_capabilities.hoverProvider = false
-			-- 	client.server_capabilities.definitionProvider = false
-			-- 	client.server_capabilities.referencesProvider = false
-			-- 	client.server_capabilities.diagnosticProvider = true
-			-- end
+			local on_attach_ruff = function(client, bufnr)
+				-- Disable features that Pyright will handle
+				client.server_capabilities.hoverProvider = false
+				client.server_capabilities.definitionProvider = false
+				client.server_capabilities.referencesProvider = false
+				client.server_capabilities.diagnosticProvider = true
+			end
 
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
@@ -159,15 +150,15 @@ return {
 				end,
 			})
 
-			-- lspconfig.ruff_lsp.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach_ruff,
-			-- 	init_options = {
-			-- 		settings = {
-			-- 			args = {},
-			-- 		},
-			-- 	},
-			-- })
+			lspconfig.ruff_lsp.setup({
+				capabilities = capabilities,
+				on_attach = on_attach_ruff,
+				init_options = {
+					settings = {
+						args = {},
+					},
+				},
+			})
 
 			lspconfig.jdtls.setup({
 				capabilities = capabilities,
