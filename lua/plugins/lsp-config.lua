@@ -33,11 +33,12 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "ruff_lsp",
                     "jedi_language_server",
                     "pyright",
                     "marksman",
                     "bashls",
+                    "ruff",
+                    "ruff_lsp"
                 },
                 automatic_installation = true,
                 modifiable = true,
