@@ -26,5 +26,23 @@ return {
 			},
 		})
 		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, { desc = "[G]o [F]ormat" })
+
+        -- local function format_json_with_jq()
+        --     vim.cmd([[%!jq .]])
+        -- end
+
+-- vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
+--     pattern = "[/?]",
+--     callback = function()
+--         vim.o.hlsearch = true -- Enable highlighting when entering search mode
+--     end,
+-- })
+        -- Set up an autocommand to set the keymap only for json file types
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "json",
+            callback = function()
+                vim.api.nvim_buf_set_keymap(0, 'n', '<leader>gf', [[:lua vim.cmd('%!jq .')<CR>]], { noremap = true, silent = true })
+            end
+        })
 	end,
 }
