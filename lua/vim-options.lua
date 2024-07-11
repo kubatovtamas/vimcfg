@@ -88,6 +88,14 @@ vim.api.nvim_set_keymap(
     { noremap = true, silent = true, desc = "[PWD] to clipboard" }
 )
 
+-- Copy the current buffer's relative to the Git repo root path to register 'a'
+vim.api.nvim_set_keymap(
+    "n",
+    "<Leader>pwD",
+    [[:let @+ = substitute(expand('%:p'), system('git rev-parse --show-toplevel | tr -d "\\n"'), '', '')<CR>]],
+    { noremap = true, silent = true, desc = "[PWD] relative to git root to clipboard" }
+)
+
 -- Scroll up three lines
 vim.api.nvim_set_keymap("n", "<C-y>", "5<C-y>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<C-y>", "5<C-y>", { noremap = true, silent = true })
@@ -113,3 +121,5 @@ vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>", {noremap = true, desc = "[T
 
 -- Alpha open
 vim.keymap.set("n", "<leader>a", ":Alpha<CR>", {noremap = true, desc = "[A]lpha"})
+
+vim.keymap.set("v", "<leader>nw", ":g/^\\s*$/d<CR>", { desc = "[N]o [W]hitespace"})
