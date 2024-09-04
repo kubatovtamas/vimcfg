@@ -122,4 +122,12 @@ vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>", {noremap = true, desc = "[T
 -- Alpha open
 vim.keymap.set("n", "<leader>a", ":Alpha<CR>", {noremap = true, desc = "[A]lpha"})
 
-vim.keymap.set("v", "<leader>nw", ":g/^\\s*$/d<CR>", { desc = "[N]o [W]hitespace"})
+-- Remove empty lines in visual line mode
+vim.keymap.set("x", "<leader>re", ":g/^\\s*$/d<CR>", { noremap = true, desc = "[R]emove [E]mpty lines" })
+
+
+-- Insert green checkmark (✅)
+vim.keymap.set("n", "<leader>cm", "a ✅<Esc>", { noremap = true, desc = "Insert green [C]heck[M]ark" })
+
+-- Insert red cross (❌)
+vim.keymap.set("n", "<leader>xx", "a ❌<Esc>", { noremap = true, desc = "Insert red cross" })

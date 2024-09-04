@@ -38,7 +38,8 @@ return {
                     "marksman",
                     "bashls",
                     "ruff",
-                    "ruff_lsp"
+                    "ruff_lsp",
+                    "terraformls",
                 },
                 automatic_installation = true,
                 modifiable = true,
@@ -153,6 +154,11 @@ return {
             })
 
             lspconfig.bashls.setup({
+                capabilities = capabilities,
+                on_attach = on_attach_func,
+            })
+
+            lspconfig.terraformls.setup({
                 capabilities = capabilities,
                 on_attach = on_attach_func,
             })
