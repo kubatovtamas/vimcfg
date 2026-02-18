@@ -6,8 +6,8 @@ return {
         local nvim_surround = require("nvim-surround")
         nvim_surround.setup({
 			keymaps = {
-				insert = "<leader><C-g>s",
-				insert_line = "<leader><C-g>S",
+				insert = "<C-g><leader>s",
+				insert_line = "<C-g><leader>S",
 				normal = "<leader>gs",
 				normal_cur = "<leader>gS",
 				normal_line = "<leader>gss",

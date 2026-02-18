@@ -80,20 +80,28 @@ vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result + center" })
 -- Run Python script
 vim.keymap.set("n", "<leader>py", ":write | :!python %<CR>", { noremap = true, desc = "Run Python script" })
 
--- Copy the current buffer's path to register 'a'
+-- Copy the current buffer's relative to the Git repo root path to register 'a' (relative path)
 vim.api.nvim_set_keymap(
     "n",
     "<Leader>pwd",
-    [[:let @+ = expand('%:p')<CR>]],
+    [[:let @+ = substitute(expand('%:p'), system('git rev-parse --show-toplevel | tr -d "\\n"'), '', '')<CR>]],
     { noremap = true, silent = true, desc = "[PWD] to clipboard" }
 )
 
--- Copy the current buffer's relative to the Git repo root path to register 'a'
+-- Copy the current buffer's path to register 'a' (absolute path)
 vim.api.nvim_set_keymap(
     "n",
     "<Leader>pwD",
-    [[:let @+ = substitute(expand('%:p'), system('git rev-parse --show-toplevel | tr -d "\\n"'), '', '')<CR>]],
+    [[:let @+ = expand('%:p')<CR>]],
     { noremap = true, silent = true, desc = "[PWD] relative to git root to clipboard" }
+)
+
+-- Open current buffer in One Markdown
+vim.api.nvim_set_keymap(
+    "n",
+    "<Leader>mo",
+    [[:silent execute "!open -a 'One Markdown' " . shellescape(expand('%:p'))<CR>]],
+    { noremap = true, silent = true, desc = "[M]arkdown [O]pen in One Markdown" }
 )
 
 -- Scroll up three lines
@@ -127,7 +135,9 @@ vim.keymap.set("x", "<leader>re", ":g/^\\s*$/d<CR>", { noremap = true, desc = "[
 
 
 -- Insert green checkmark (✅)
-vim.keymap.set("n", "<leader>cm", "a ✅<Esc>", { noremap = true, desc = "Insert green [C]heck[M]ark" })
+vim.keymap.set("n", "<leader>acm", "a ✅<Esc>", { noremap = true, desc = "[A]ppend [C]heck[M]ark" })
+vim.keymap.set("n", "<leader>icm", "i✅ <Esc>", { noremap = true, desc = "[I]nsert [C]heck[M]ark" })
 
 -- Insert red cross (❌)
-vim.keymap.set("n", "<leader>xx", "a ❌<Esc>", { noremap = true, desc = "Insert red cross" })
+vim.keymap.set("n", "<leader>axm", "a ❌<Esc>", { noremap = true, desc = "[A]ppend [X]-[M]ark" })
+vim.keymap.set("n", "<leader>ixm", "i❌ <Esc>", { noremap = true, desc = "[I]nsert [X]-[M]ark" })

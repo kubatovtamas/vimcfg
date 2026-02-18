@@ -16,7 +16,6 @@ return {
                 "css",
                 "html",
                 "sql",
-                "java",
                 "ruby",
                 "markdown",
             },

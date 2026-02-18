@@ -13,6 +13,13 @@ return {
 
 				null_ls.builtins.formatting.prettier,
 
+				-- prettier for markdown prose wrapping (preserves tables)
+				null_ls.builtins.formatting.prettier.with({
+					command = vim.fn.stdpath("data") .. "/mason/bin/prettier",
+					extra_args = { "--prose-wrap", "always", "--print-width", "150" },
+					filetypes = { "markdown" },
+				}),
+
 				null_ls.builtins.formatting.ruff,
 
 				null_ls.builtins.formatting.shfmt,
