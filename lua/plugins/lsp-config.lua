@@ -105,14 +105,16 @@ return {
         },
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "lua_ls",
-                    "jedi_language_server",
-                    "pyright",
-                    "marksman",
-                    "bashls",
-                    "ruff",
-                    "terraformls",
+				ensure_installed = {
+					"lua_ls",
+					"ty",
+					"marksman",
+					"bashls",
+					"ruff",
+					"terraformls",
+				},
+                automatic_enable = {
+                    exclude = { "stylua" }, -- stylua is a formatter, not an LSP server
                 },
                 automatic_installation = true,
                 modifiable = true,
@@ -164,8 +166,6 @@ return {
                     goto_definition_dedupe,
                     merge_tables(bufopts, { desc = "[D]efinition (Global)" })
                 )
-                -- vim.keymap.set("n", "gd", vim.lsp.buf.declaration, bufopts)
-                -- vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, bufopts)
                 vim.keymap.set("n", "<leader>k", vim.lsp.buf.hover, merge_tables(bufopts, { desc = "Hover" }))
                 vim.keymap.set(
                     "n",
@@ -193,16 +193,16 @@ return {
                 capabilities = capabilities,
                 on_attach = on_attach_func,
             })
-            lspconfig.pyright.setup({
-                capabilities = capabilities,
-                on_attach = function(client, bufnr)
-                    on_attach_func(client, bufnr, false)
-                end,
-            })
-            lspconfig.ruff.setup({
-                capabilities = capabilities,
-                on_attach = on_attach_func,
-            })
+			lspconfig.ty.setup({
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					on_attach_func(client, bufnr, false)
+				end,
+			})
+			lspconfig.ruff.setup({
+				capabilities = capabilities,
+				on_attach = on_attach_func,
+			})
             lspconfig.terraformls.setup({
                 capabilities = capabilities,
                 on_attach = on_attach_func,
