@@ -13,8 +13,6 @@ return {
 
 				null_ls.builtins.formatting.prettier,
 
-				null_ls.builtins.formatting.ruff,
-
 				null_ls.builtins.formatting.shfmt,
 				require("none-ls-shellcheck.diagnostics"),
 				require("none-ls-shellcheck.code_actions"),
