@@ -13,47 +13,48 @@ end
 local function deduplicate_locations(locations)
     local seen = {}
     local result = {}
-    
+
     for _, location in ipairs(locations) do
         -- Create a unique key based on file and position
-        local key = string.format("%s:%d:%d", 
-            location.uri or location.targetUri, 
+        local key = string.format(
+            "%s:%d:%d",
+            location.uri or location.targetUri,
             location.range and location.range.start.line or location.targetSelectionRange.start.line,
             location.range and location.range.start.character or location.targetSelectionRange.start.character
         )
-        
+
         if not seen[key] then
             seen[key] = true
             table.insert(result, location)
         end
     end
-    
+
     return result
 end
 
 -- Custom definition handler that deduplicates results
 local function goto_definition_dedupe()
     local params = vim.lsp.util.make_position_params()
-    vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
+    vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result, ctx, config)
         if err then
-            vim.notify('Error getting definition: ' .. err.message, vim.log.levels.ERROR)
+            vim.notify("Error getting definition: " .. err.message, vim.log.levels.ERROR)
             return
         end
-        
+
         if not result or vim.tbl_isempty(result) then
-            vim.notify('No definition found', vim.log.levels.INFO)
+            vim.notify("No definition found", vim.log.levels.INFO)
             return
         end
-        
+
         -- Deduplicate the results
         local deduplicated = deduplicate_locations(result)
-        
+
         -- Use vim.lsp.util.jump_to_location for the deduplicated results
         if #deduplicated == 1 then
-            vim.lsp.util.jump_to_location(deduplicated[1], 'utf-8')
+            vim.lsp.util.jump_to_location(deduplicated[1], "utf-8")
         else
-            vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(deduplicated, 'utf-8'))
-            vim.cmd('copen')
+            vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(deduplicated, "utf-8"))
+            vim.cmd("copen")
         end
     end)
 end
@@ -62,24 +63,24 @@ end
 local function goto_references_dedupe()
     local params = vim.lsp.util.make_position_params()
     params.context = { includeDeclaration = true }
-    vim.lsp.buf_request(0, 'textDocument/references', params, function(err, result, ctx, config)
+    vim.lsp.buf_request(0, "textDocument/references", params, function(err, result, ctx, config)
         if err then
-            vim.notify('Error getting references: ' .. err.message, vim.log.levels.ERROR)
+            vim.notify("Error getting references: " .. err.message, vim.log.levels.ERROR)
             return
         end
-        
+
         if not result or vim.tbl_isempty(result) then
-            vim.notify('No references found', vim.log.levels.INFO)
+            vim.notify("No references found", vim.log.levels.INFO)
             return
         end
-        
+
         -- Deduplicate the results
         local deduplicated = deduplicate_locations(result)
-        
+
         -- Set quickfix list with deduplicated references
-        local items = vim.lsp.util.locations_to_items(deduplicated, 'utf-8')
-        vim.fn.setqflist({}, ' ', { title = 'LSP references', items = items })
-        vim.cmd('copen')
+        local items = vim.lsp.util.locations_to_items(deduplicated, "utf-8")
+        vim.fn.setqflist({}, " ", { title = "LSP references", items = items })
+        vim.cmd("copen")
     end)
 end
 
@@ -105,14 +106,14 @@ return {
         },
         config = function()
             require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"ty",
-					"marksman",
-					"bashls",
-					"ruff",
-					"terraformls",
-				},
+                ensure_installed = {
+                    "lua_ls",
+                    "ty",
+                    "marksman",
+                    "bashls",
+                    "terraformls",
+                    "ruff",
+                },
                 automatic_enable = {
                     exclude = { "stylua" }, -- stylua is a formatter, not an LSP server
                 },
@@ -193,17 +194,17 @@ return {
                 capabilities = capabilities,
                 on_attach = on_attach_func,
             })
-			lspconfig.ty.setup({
-				capabilities = capabilities,
-				on_attach = function(client, bufnr)
-					on_attach_func(client, bufnr, false)
-				end,
-			})
-			lspconfig.ruff.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_func,
-			})
+            lspconfig.ty.setup({
+                capabilities = capabilities,
+                on_attach = function(client, bufnr)
+                    on_attach_func(client, bufnr, false)
+                end,
+            })
             lspconfig.terraformls.setup({
+                capabilities = capabilities,
+                on_attach = on_attach_func,
+            })
+            lspconfig.ruff.setup({
                 capabilities = capabilities,
                 on_attach = on_attach_func,
             })
