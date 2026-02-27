@@ -84,7 +84,7 @@ vim.keymap.set("n", "<leader>py", ":write | :!python %<CR>", { noremap = true, d
 vim.api.nvim_set_keymap(
     "n",
     "<Leader>pwd",
-    [[:let @+ = substitute(expand('%:p'), system('git rev-parse --show-toplevel | tr -d "\\n"'), '', '')<CR>]],
+    [[:let @+ = "." . substitute(expand('%:p'), system('git rev-parse --show-toplevel | tr -d "\\n"'), '', '')<CR>]],
     { noremap = true, silent = true, desc = "[PWD] to clipboard" }
 )
 
