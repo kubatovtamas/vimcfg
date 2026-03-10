@@ -4,6 +4,13 @@ vim.cmd("set rtp+=/opt/homebrew/opt/fzf")
 
 vim.g.loaded_perl_provider = 0
 
+vim.filetype.add({
+    extension = {
+        mdx = "markdown.mdx",
+        tfvars = "terraform-vars",
+    },
+})
+
 vim.cmd("set expandtab")
 vim.cmd("set autoindent")
 vim.cmd("set tabstop=4")

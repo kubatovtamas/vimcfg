@@ -9,81 +9,6 @@ local function merge_tables(first_table, second_table)
     return res
 end
 
--- Function to deduplicate LSP locations
-local function deduplicate_locations(locations)
-    local seen = {}
-    local result = {}
-
-    for _, location in ipairs(locations) do
-        -- Create a unique key based on file and position
-        local key = string.format(
-            "%s:%d:%d",
-            location.uri or location.targetUri,
-            location.range and location.range.start.line or location.targetSelectionRange.start.line,
-            location.range and location.range.start.character or location.targetSelectionRange.start.character
-        )
-
-        if not seen[key] then
-            seen[key] = true
-            table.insert(result, location)
-        end
-    end
-
-    return result
-end
-
--- Custom definition handler that deduplicates results
-local function goto_definition_dedupe()
-    local params = vim.lsp.util.make_position_params()
-    vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result, ctx, config)
-        if err then
-            vim.notify("Error getting definition: " .. err.message, vim.log.levels.ERROR)
-            return
-        end
-
-        if not result or vim.tbl_isempty(result) then
-            vim.notify("No definition found", vim.log.levels.INFO)
-            return
-        end
-
-        -- Deduplicate the results
-        local deduplicated = deduplicate_locations(result)
-
-        -- Use vim.lsp.util.jump_to_location for the deduplicated results
-        if #deduplicated == 1 then
-            vim.lsp.util.jump_to_location(deduplicated[1], "utf-8")
-        else
-            vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(deduplicated, "utf-8"))
-            vim.cmd("copen")
-        end
-    end)
-end
-
--- Custom references handler that deduplicates results
-local function goto_references_dedupe()
-    local params = vim.lsp.util.make_position_params()
-    params.context = { includeDeclaration = true }
-    vim.lsp.buf_request(0, "textDocument/references", params, function(err, result, ctx, config)
-        if err then
-            vim.notify("Error getting references: " .. err.message, vim.log.levels.ERROR)
-            return
-        end
-
-        if not result or vim.tbl_isempty(result) then
-            vim.notify("No references found", vim.log.levels.INFO)
-            return
-        end
-
-        -- Deduplicate the results
-        local deduplicated = deduplicate_locations(result)
-
-        -- Set quickfix list with deduplicated references
-        local items = vim.lsp.util.locations_to_items(deduplicated, "utf-8")
-        vim.fn.setqflist({}, " ", { title = "LSP references", items = items })
-        vim.cmd("copen")
-    end)
-end
-
 return {
     {
         "williamboman/mason.nvim",
@@ -108,7 +33,7 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "ty",
+                    "basedpyright",
                     "marksman",
                     "bashls",
                     "terraformls",
@@ -143,7 +68,7 @@ return {
             vim.keymap.set(
                 "n",
                 "<leader>gr",
-                goto_references_dedupe,
+                vim.lsp.buf.references,
                 merge_tables(opts, { desc = "[R]eferences (quickfixlist)" })
             )
             vim.keymap.set("n", "<leader>qo", ":copen<CR>", merge_tables(opts, { desc = "[Q]uickfix [O]pen" }))
@@ -164,7 +89,7 @@ return {
                 vim.keymap.set(
                     "n",
                     "gD",
-                    goto_definition_dedupe,
+                    vim.lsp.buf.definition,
                     merge_tables(bufopts, { desc = "[D]efinition (Global)" })
                 )
                 vim.keymap.set("n", "<leader>k", vim.lsp.buf.hover, merge_tables(bufopts, { desc = "Hover" }))
@@ -194,8 +119,29 @@ return {
                 capabilities = capabilities,
                 on_attach = on_attach_func,
             })
-            lspconfig.ty.setup({
+            lspconfig.basedpyright.setup({
                 capabilities = capabilities,
+                settings = {
+                    basedpyright = {
+                        disableLanguageServices = false, -- Keep full LSP features on (hover/defs/refs/completion/actions).
+                        disableOrganizeImports = true, -- Disable basedpyright organize-imports action; use Ruff for import sorting.
+                        disableTaggedHints = false, -- Keep tagged hint diagnostics (deprecated/unused/unreachable tags).
+                        analysis = {
+                            diagnosticMode = "workspace", -- Analyze entire workspace, not only open files.
+                            autoSearchPaths = true, -- Auto-detect common import roots (e.g. src/).
+                            autoImportCompletions = true, -- Offer auto-import completion items.
+                            useLibraryCodeForTypes = true, -- Infer types from library source when stubs are missing.
+                            typeCheckingMode = "recommended", -- Enable stricter recommended ruleset.
+                            inlayHints = {
+                                variableTypes = true, -- Show inferred variable type hints.
+                                callArgumentNames = true, -- Show argument-name hints at call sites.
+                                callArgumentNamesMatching = true, -- Show hints even when arg name matches parameter name.
+                                functionReturnTypes = true, -- Show inferred return-type hints for functions.
+                                genericTypes = true, -- Show inferred generic type parameter hints.
+                            },
+                        },
+                    },
+                },
                 on_attach = function(client, bufnr)
                     on_attach_func(client, bufnr, false)
                 end,
