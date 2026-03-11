@@ -9,6 +9,44 @@ local function merge_tables(first_table, second_table)
     return res
 end
 
+local function infer_position_encoding(window)
+    local bufnr = vim.api.nvim_get_current_buf()
+    if type(window) == "number" and vim.api.nvim_win_is_valid(window) then
+        bufnr = vim.api.nvim_win_get_buf(window)
+    end
+
+    local encoding = nil
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+        local capability_encodings = vim.tbl_get(client, "config", "capabilities", "general", "positionEncodings")
+        local client_encoding = client.offset_encoding
+            or client.encoding
+            or client.config.offset_encoding
+            or (capability_encodings and capability_encodings[1])
+        if client_encoding ~= nil then
+            if encoding == nil then
+                encoding = client_encoding
+            elseif encoding ~= client_encoding then
+                return nil
+            end
+        end
+    end
+
+    return encoding
+end
+
+local function patch_make_position_params()
+    if vim.lsp.util._copilot_position_encoding_patch_applied then
+        return
+    end
+
+    local original_make_position_params = vim.lsp.util.make_position_params
+    vim.lsp.util.make_position_params = function(window, position_encoding)
+        position_encoding = position_encoding or infer_position_encoding(window)
+        return original_make_position_params(window, position_encoding)
+    end
+    vim.lsp.util._copilot_position_encoding_patch_applied = true
+end
+
 return {
     {
         "williamboman/mason.nvim",
@@ -40,7 +78,8 @@ return {
                     "ruff",
                 },
                 automatic_enable = {
-                    exclude = { "stylua" }, -- stylua is a formatter, not an LSP server
+                    -- These are configured below. Exclude them here to avoid duplicate default clients.
+                    exclude = { "lua_ls", "basedpyright", "marksman", "bashls", "terraformls", "ruff" },
                 },
                 automatic_installation = true,
                 modifiable = true,
@@ -51,7 +90,11 @@ return {
         "neovim/nvim-lspconfig",
         lazy = false,
         config = function()
+            patch_make_position_params()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            capabilities.general = vim.tbl_deep_extend("force", capabilities.general or {}, {
+                positionEncodings = { "utf-16" },
+            })
             local lspconfig = require("lspconfig")
             local opts = { noremap = true, silent = true }
             vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "[E]rrors Popup" })
