@@ -72,6 +72,7 @@ return {
                 ensure_installed = {
                     "lua_ls",
                     "basedpyright",
+                    "vtsls",
                     "marksman",
                     "bashls",
                     "terraformls",
@@ -79,7 +80,7 @@ return {
                 },
                 automatic_enable = {
                     -- These are configured below. Exclude them here to avoid duplicate default clients.
-                    exclude = { "lua_ls", "basedpyright", "marksman", "bashls", "terraformls", "ruff" },
+                    exclude = { "lua_ls", "basedpyright", "vtsls", "marksman", "bashls", "terraformls", "ruff" },
                 },
                 automatic_installation = true,
                 modifiable = true,
@@ -185,6 +186,12 @@ return {
                         },
                     },
                 },
+                on_attach = function(client, bufnr)
+                    on_attach_func(client, bufnr, false)
+                end,
+            })
+            lspconfig.vtsls.setup({
+                capabilities = capabilities,
                 on_attach = function(client, bufnr)
                     on_attach_func(client, bufnr, false)
                 end,
