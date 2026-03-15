@@ -1,7 +1,44 @@
 return {
 	"lewis6991/gitsigns.nvim",
 	config = function()
-		require("gitsigns").setup({
+		local gitsigns = require("gitsigns")
+		local last_hunk_nav
+		local last_hunk_nav_buf
+		local last_char_search
+
+		local function set_last_hunk_nav(direction)
+			last_hunk_nav = direction
+			last_hunk_nav_buf = vim.api.nvim_get_current_buf()
+			last_char_search = vim.deepcopy(vim.fn.getcharsearch())
+		end
+
+		local function nav_hunk(direction)
+			set_last_hunk_nav(direction)
+			gitsigns.nav_hunk(direction)
+		end
+
+		local function repeat_hunk_nav(reverse)
+			if
+				last_hunk_nav == nil
+				or last_hunk_nav_buf ~= vim.api.nvim_get_current_buf()
+				or not vim.deep_equal(vim.fn.getcharsearch(), last_char_search)
+			then
+				return reverse and "," or ";"
+			end
+
+			local direction = last_hunk_nav
+			if reverse then
+				direction = direction == "next" and "prev" or "next"
+			end
+
+			vim.schedule(function()
+				nav_hunk(direction)
+			end)
+
+			return "<Ignore>"
+		end
+
+		gitsigns.setup({
 			signs = {
 				add = { text = "│" },
 				change = { text = "│" },
@@ -44,5 +81,18 @@ return {
 			-- 	enable = false,
 			-- },
 		})
+
+		vim.keymap.set("n", "]h", function()
+			nav_hunk("next")
+		end, { desc = "Next [H]unk" })
+		vim.keymap.set("n", "[h", function()
+			nav_hunk("prev")
+		end, { desc = "Prev [H]unk" })
+		vim.keymap.set("n", ";", function()
+			return repeat_hunk_nav(false)
+		end, { expr = true, desc = "Repeat hunk nav or native ;" })
+		vim.keymap.set("n", ",", function()
+			return repeat_hunk_nav(true)
+		end, { expr = true, desc = "Reverse hunk nav or native ," })
 	end,
 }
