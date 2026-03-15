@@ -96,7 +96,6 @@ return {
             capabilities.general = vim.tbl_deep_extend("force", capabilities.general or {}, {
                 positionEncodings = { "utf-16" },
             })
-            local lspconfig = require("lspconfig")
             local opts = { noremap = true, silent = true }
             vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "[E]rrors Popup" })
             vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, merge_tables(opts, { desc = "Prev [D]iagnostic" }))
@@ -151,20 +150,23 @@ return {
                     end
                 end
             end
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
+            local enable_server = function(name, config)
+                vim.lsp.config(name, vim.tbl_deep_extend("force", {
+                    capabilities = capabilities,
+                }, config or {}))
+                vim.lsp.enable(name)
+            end
+
+            enable_server("lua_ls", {
                 on_attach = on_attach_func,
             })
-            lspconfig.marksman.setup({
-                capabilities = capabilities,
+            enable_server("marksman", {
                 on_attach = on_attach_func,
             })
-            lspconfig.bashls.setup({
-                capabilities = capabilities,
+            enable_server("bashls", {
                 on_attach = on_attach_func,
             })
-            lspconfig.basedpyright.setup({
-                capabilities = capabilities,
+            enable_server("basedpyright", {
                 settings = {
                     basedpyright = {
                         disableLanguageServices = false, -- Keep full LSP features on (hover/defs/refs/completion/actions).
@@ -190,18 +192,15 @@ return {
                     on_attach_func(client, bufnr, false)
                 end,
             })
-            lspconfig.vtsls.setup({
-                capabilities = capabilities,
+            enable_server("vtsls", {
                 on_attach = function(client, bufnr)
                     on_attach_func(client, bufnr, false)
                 end,
             })
-            lspconfig.terraformls.setup({
-                capabilities = capabilities,
+            enable_server("terraformls", {
                 on_attach = on_attach_func,
             })
-            lspconfig.ruff.setup({
-                capabilities = capabilities,
+            enable_server("ruff", {
                 on_attach = on_attach_func,
             })
         end,
