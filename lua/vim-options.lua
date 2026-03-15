@@ -53,7 +53,7 @@ vim.api.nvim_create_autocmd({ "CmdlineLeave" }, {
 
 vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
--- vim.opt.scrolloff = 12
+vim.opt.scrolloff = 20
 vim.opt.scroll = 20
 
 -- Delete and paste without yanking
