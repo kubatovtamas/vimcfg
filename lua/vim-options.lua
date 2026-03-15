@@ -53,7 +53,8 @@ vim.api.nvim_create_autocmd({ "CmdlineLeave" }, {
 
 vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
-vim.opt.scrolloff = 12
+-- vim.opt.scrolloff = 12
+vim.opt.scroll = 20
 
 -- Delete and paste without yanking
 vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
@@ -65,6 +66,8 @@ vim.keymap.set("v", "<leader>d", '"_d', { desc = "Delete without yank (visual)" 
 -- Map Shift + Tab to deindent in insert mode
 vim.keymap.set({ "n", "i" }, "<S-Tab>", "<C-d>", { noremap = true, silent = true, desc = "Deindent (Shift+Tab)" })
 
+local scroll_animate = require("scroll-animate")
+
 -- File writing shortcuts
 vim.keymap.set("n", "<leader>ww", ":write<CR>", { noremap = true, silent = true, desc = "[W]rite File" })
 vim.keymap.set("n", "<leader>WW", ":wa<CR>", { noremap = true, silent = true, desc = "[W]rite All Files" })
@@ -73,8 +76,12 @@ vim.keymap.set("n", "<leader>wqa", ":wqa<CR>", { noremap = true, silent = true, 
 vim.keymap.set("n", "<leader>qq", ":q<CR>", { noremap = true, silent = true, desc = "[Q]uit" })
 
 -- Center screen on scrolling
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
+vim.keymap.set("n", "<C-d>", function()
+    scroll_animate.scroll_half_page("down")
+end, { desc = "Scroll down and center" })
+vim.keymap.set("n", "<C-u>", function()
+    scroll_animate.scroll_half_page("up")
+end, { desc = "Scroll up and center" })
 
 -- Move lines up and down in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move line down" })
