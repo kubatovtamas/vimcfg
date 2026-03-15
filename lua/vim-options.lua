@@ -68,6 +68,11 @@ vim.keymap.set({ "n", "i" }, "<S-Tab>", "<C-d>", { noremap = true, silent = true
 
 local scroll_animate = require("scroll-animate")
 
+local function search_and_center_with_specs(motion)
+    vim.cmd.normal({ bang = true, args = { motion .. "zzzv" } })
+    require("specs").show_specs()
+end
+
 -- File writing shortcuts
 vim.keymap.set("n", "<leader>ww", ":write<CR>", { noremap = true, silent = true, desc = "[W]rite File" })
 vim.keymap.set("n", "<leader>WW", ":wa<CR>", { noremap = true, silent = true, desc = "[W]rite All Files" })
@@ -88,8 +93,12 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move line down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move line up" })
 
 -- Center screen on search result navigation
-vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result + center" })
-vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result + center" })
+vim.keymap.set("n", "n", function()
+    search_and_center_with_specs("n")
+end, { desc = "Next search result + center + specs" })
+vim.keymap.set("n", "N", function()
+    search_and_center_with_specs("N")
+end, { desc = "Previous search result + center + specs" })
 
 -- Run Python script
 vim.keymap.set("n", "<leader>py", ":write | :!python %<CR>", { noremap = true, desc = "Run Python script" })
