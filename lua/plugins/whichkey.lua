@@ -25,19 +25,6 @@ return {
 		wk.add({
 			{ "]", desc = "Go To Next"},
 		})
-
-		-- local visualMappings = {
-		--     ["<leader>"] = {
-		--         g = {
-		--             name = "[G]o",
-		--             c = "Toggle region line [C]omment",
-		--             b = "Toggle region [B]lock comment",
-		--         },
-		--     },
-		-- }
-		-- wk.register(visualMappings, { mode = "v" })
-		-- wk.register(visualMappings, { mode = "x" })
-		-- wk.register(visualMappings, { mode = "s" })
 	end,
 	opts = {},
 }
