@@ -2,9 +2,7 @@ return {
 	url = "https://codeberg.org/andyg/leap.nvim",
 	config = function()
 		local apply_backdrop = function()
-			if vim.g.colors_name and vim.g.colors_name:match("^catppuccin") then
-				require("leap.user").set_backdrop_highlight("Comment")
-			end
+			require("leap.user").set_backdrop_highlight("Comment")
 		end
 
 		vim.api.nvim_create_autocmd("ColorScheme", {
