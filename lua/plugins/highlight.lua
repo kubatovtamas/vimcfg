@@ -4,9 +4,11 @@ return {
 		-- default configuration
 		require("illuminate").configure({
 			-- providers: provider used to get references in the buffer, ordered by priority
+			-- "treesitter" provider removed: it calls nvim-treesitter's archived
+			-- `locals` module, which crashes on Neovim 0.12 (locals.lua :parent() nil).
+			-- "lsp" gives precise highlighting; "regex" is the fallback without LSP.
 			providers = {
 				"lsp",
-				"treesitter",
 				"regex",
 			},
 			-- delay: delay in milliseconds
