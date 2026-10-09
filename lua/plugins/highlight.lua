@@ -70,7 +70,5 @@ return {
 		-- Keybinding for going to the previous reference
 		vim.api.nvim_set_keymap("n", "<leader>gp", "<cmd>lua require('illuminate').goto_prev_reference(true)<CR>", { noremap = true, silent = true, desc = "[P]revious Reference" })
 
-		-- Keybinding for selecting the current reference
-		vim.api.nvim_set_keymap("n", "<leader>gs", "<cmd>lua require('illuminate').textobj_select()<CR>", { noremap = true, silent = true, desc = "[S]elect Reference" })
 	end,
 }

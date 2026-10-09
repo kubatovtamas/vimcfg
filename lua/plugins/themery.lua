@@ -4,7 +4,7 @@
 -- │ Each must match a `name` in the curated list below.               │
 -- └─────────────────────────────────────────────────────────────────┘
 local light_theme = "Cyberdream Light"
-local dark_theme = "OneDark Dark"
+local dark_theme = "Catppuccin Frappe"
 
 -- Curated entries: friendly names and explicit variant handling for the
 -- colorschemes whose light/dark mode is controlled by a sticky setup()

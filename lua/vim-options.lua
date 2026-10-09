@@ -151,7 +151,7 @@ vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n><C-w>w]], {noremap = true})
 vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>", {noremap = true, desc = "[T]oggle [T]erminal"})
 
 -- Alpha open
-vim.keymap.set("n", "<leader>a", ":Alpha<CR>", {noremap = true, desc = "[A]lpha"})
+vim.keymap.set("n", "<leader>a<Space>", ":Alpha<CR>", {noremap = true, desc = "[A]lpha"})
 
 -- Remove empty lines in visual line mode
 vim.keymap.set("x", "<leader>re", ":g/^\\s*$/d<CR>", { noremap = true, desc = "[R]emove [E]mpty lines" })
