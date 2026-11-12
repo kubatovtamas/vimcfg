@@ -69,14 +69,13 @@ return {
         },
         config = function()
             require("mason-lspconfig").setup({
+                -- basedpyright and ruff come pinned from mise (~/.config/mise/config.toml), not Mason.
                 ensure_installed = {
                     "lua_ls",
-                    "basedpyright",
                     "vtsls",
                     "marksman",
                     "bashls",
                     "terraformls",
-                    "ruff",
                 },
                 automatic_enable = {
                     -- These are configured below. Exclude them here to avoid duplicate default clients.
@@ -98,8 +97,20 @@ return {
             })
             local opts = { noremap = true, silent = true }
             vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "[E]rrors Popup" })
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, merge_tables(opts, { desc = "Prev [D]iagnostic" }))
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, merge_tables(opts, { desc = "Next [D]iagnostic" }))
+            local function jump_diagnostic(count)
+                vim.diagnostic.jump({
+                    count = count,
+                    on_jump = function(_, bufnr)
+                        vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor", focus = false })
+                    end,
+                })
+            end
+            vim.keymap.set("n", "[d", function()
+                jump_diagnostic(-1)
+            end, merge_tables(opts, { desc = "Prev [D]iagnostic" }))
+            vim.keymap.set("n", "]d", function()
+                jump_diagnostic(1)
+            end, merge_tables(opts, { desc = "Next [D]iagnostic" }))
             vim.keymap.set(
                 "n",
                 "<leader>ge",

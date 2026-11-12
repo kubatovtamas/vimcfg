@@ -5,7 +5,6 @@ return {
 		"gbprod/none-ls-shellcheck.nvim",
 	},
 	config = function()
-        require("mason").setup()
 		local null_ls = require("null-ls")
 		null_ls.setup({
 			sources = {
